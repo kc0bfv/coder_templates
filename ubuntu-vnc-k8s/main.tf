@@ -64,12 +64,15 @@ resource "coder_agent" "main" {
     # Start VNC
     # TODO
     # Run TightVNC via the script in /opt/vnc or whatever - in the background somehow
+    /opt/vnc/scripts/vncserver.sh &
 
     # Start noVNC
     cd /opt/vnc/noVNC/utils
     # TODO
     # Patch the part in launch.sh that calls python instead of python3
-    # Run launch.sh listening on port 6081 and talking to vnc server on 5090, background it
+    # Run launch.sh listening on port 6081 and talking to vnc server on 5990, background it
+    sudo ln -s /usr/bin/python3 /usr/bin/python
+    ./launch.sh --listen 6081 --vnc localhost:5990 &
   EOT
 }
 
@@ -173,6 +176,9 @@ resource "kubernetes_pod" "main" {
         mount_path = "/home/coder"
         name       = "home"
         read_only  = false
+      }
+      resources {
+        requests = { memory = "4Gi" }
       }
     }
 

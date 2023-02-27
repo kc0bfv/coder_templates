@@ -1,1 +1,0 @@
-My custom [coder](https://coder.com/docs/v2/latest/templates) templates
